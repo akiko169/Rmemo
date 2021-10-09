@@ -1,2 +1,2 @@
 # Rmemo
-memorandum
+This is just a memorandum for R.
