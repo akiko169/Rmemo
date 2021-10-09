@@ -1,0 +1,27 @@
+library("dplyr")
+
+ID <- c(1:80, 1:70)       # irisの150行に結合するためのIDを作成。70行分の重複を作る
+aaa <- cbind(ID, iris)    # IDとirisを結合
+
+aaa_dupID <- aaa[duplicated(aaa$ID), c("ID")]   #重複しているIDを取り出す。duplicated()は重複のうち後者をTRUEとして返す。
+
+bx <- matrix(nrow = length(aaa_dupID), ncol = ncol(aaa)) # 結果を入れる空箱を作っておく
+
+x <- 0
+for (i in 1:length(aaa_dupID)) {
+
+    x <- x + 1
+    
+    bbb <- aaa %>% filter(ID == aaa_dupID[x])         # aaa_dupIDのx個めのIDをaaaから取り出しbbbに入れる
+    bx[x,] <- mapply(identical, bbb[1,], bbb[2,])   # 上下を比較してTRUE/FALSEのベクターをbxに入れる
+
+}
+
+# T/Fのlogicalの場合、sum()でTRUEの合計が出る。ベクター、データフレームどちらにも使える。ベクターなら、length(which())でも同じこと。
+bx_rowTRUE <- apply(bx, 1, sum)
+summary(bx_rowTRUE)
+table(bx_rowTRUE)
+
+bx_colTRUE <- apply(bx, 2, sum)
+summary(bx_colTRUE)
+table(bx_colTRUE)
