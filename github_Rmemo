@@ -13,15 +13,17 @@ for (i in 1:length(aaa_dupID)) {
     x <- x + 1
     
     bbb <- aaa %>% filter(ID == aaa_dupID[x])         # aaa_dupIDのx個めのIDをaaaから取り出しbbbに入れる
-    bx[x,] <- mapply(identical, bbb[1,], bbb[2,])   # 上下を比較してTRUE/FALSEのベクターをbxに入れる
+    bx[x,] <- mapply(identical, bbb[1,], bbb[2,])   # 上下を比較してTRUE/FALSEのベクトルをbxに入れる
 
 }
 
-# T/Fのlogicalの場合、sum()でTRUEの合計が出る。ベクター、データフレームどちらにも使える。ベクターなら、length(which())でも同じこと。
+# T/Fのlogicalの場合、sum()でTRUEの合計が出る。ベクトル、データフレームどちらにも使える。ベクトルならlength(which())でも同じこと。
 bx_rowTRUE <- apply(bx, 1, sum)
+bx_colTRUE <- apply(bx, 2, sum)
+
 summary(bx_rowTRUE)
 table(bx_rowTRUE)
 
-bx_colTRUE <- apply(bx, 2, sum)
 summary(bx_colTRUE)
 table(bx_colTRUE)
+
